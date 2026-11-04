@@ -1,1 +1,1 @@
-# game-solver-template
+# Dr.Fogarty is Awesome
