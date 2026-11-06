@@ -20,8 +20,8 @@ testBoard = [ ((x,y), if mod x 2 == 0 then Hori else Vert) | x<-[0..10], y<-[0..
 
 -- this function takes in a position and a gamestate
 -- then returns a list of all cells adjacent to the given position
-getNearby :: Game -> Cell -> [Cell]
-getNearby (board,_,max) ((x,y),_) = catMaybes $ map (getCell board) possibles
+adjacents :: Game -> Cell -> [Cell]
+adjacents (board,_,max) ((x,y),_) = catMaybes $ map (getCell board) possibles
   where possibles = (x-1,y):(x+1,y):(x,y-1):(x+1,y-1):(x-1,y+1):(x,y+1):[]
         foldHelper _ [] = []
         foldHelper pos lst = case getCell board pos of Nothing -> lst
