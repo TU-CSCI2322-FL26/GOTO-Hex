@@ -10,6 +10,7 @@ type Move = Position
 type Winner = Maybe Player
 
 testGame = ([], Hori, 11)
+testGame2 = ([((1,1),Vert)], Hori, 11)
 testMove = (4, 4)
 
 -- makeMove takes a Game and a Move, and returns the Game after the move concluded 
@@ -32,3 +33,9 @@ validMove (board, _, size) move =
     move `notElem` map fst board &&
     fst move >= 0 && fst move < size &&
     snd move >= 0 && snd move < size
+
+
+-- legalMoves takes a Game state and returns the list of all valid moves
+legalMoves :: Game -> [Move]
+legalMoves game@(_, _, size) =
+    [ (x, y) | x <- [0..size-1], y <- [0..size-1], validMove game (x, y) ]
