@@ -16,7 +16,32 @@ testGame = (testBoard, Hori, 11)
 testBoard = [ ((x,y), if mod x 2 == 0 then Hori else Vert) | x<-[0..10], y<-[0..10] ]
 -- testing code --
 
+-- this function takes in a Game and returns whether that game
+getWinner :: Game -> Winner
+getWinner (game@(board, player, boardsize)) = lookup True (zip wins $ map snd starts)
+  where starts = [ cell | (cell@((x,y),p))<-board, case p of Hori -> x == 0
+                                                             Vert -> y == 0 ]
+        wins = map (\x -> auxWins game [] (x:[])) starts
 
+-- this function takes in a list of cells (or a single cell :[] to start) to check and a game
+-- then returns whether or not the cells connect the respective side(s)
+auxWins :: Game -> [Cell] -> [Cell] -> Bool
+auxWins _ acc [] = False
+auxWins (game@(board, _, bsize)) acc ((curr@((x,y),p)):toCheck) =
+  let tmp = [ x | x<-(adjSimilar board curr), not (elem x acc) ]
+      newChecks = tmp ++ toCheck
+      newAcc = newChecks ++ acc
+      winDimension = case p of Hori -> x
+                               Vert -> y
+  in if (winDimension == bsize - 1)
+       then True
+       else auxWins game newAcc newChecks
+
+-- this function takes in a cell and a boardstate
+-- then returns a list of all cells with the same player adjacent to the given cell
+adjSimilar :: Board -> Cell -> [Cell]
+adjSimilar board (cell@(_,player)) = [ x | (x@(_,pl))<-neighbors, pl == player ]
+  where neighbors = adjacents board cell
 
 -- this function takes in a position and a boardstate
 -- then returns a list of all cells adjacent to the given position
