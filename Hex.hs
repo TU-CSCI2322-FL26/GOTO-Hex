@@ -15,11 +15,11 @@ testMove = (4, 4)
 
 -- makeMove takes a Game and a Move, and returns the Game after the move concluded 
 -- returns an unchanged Game state if the attempted move is invalid
-makeMove :: Game -> Move -> Game
+makeMove :: Game -> Move -> Maybe Game
 makeMove (board, player, size) move
     | validMove (board, player, size) move = 
-        (board ++ [(move, player)], switchPlayer player, size)
-    | otherwise = (board, player, size)
+        Just ((move, player):board, switchPlayer player, size)
+    | otherwise = Nothing
 
 -- switchPlayer swaps the current player
 switchPlayer :: Player -> Player
@@ -30,10 +30,9 @@ switchPlayer Vert = Hori
 -- and if the position is inside of the board size 
 validMove :: Game -> Move -> Bool
 validMove (board, _, size) move =
-    move `notElem` map fst board &&
     fst move >= 0 && fst move < size &&
-    snd move >= 0 && snd move < size
-
+    snd move >= 0 && snd move < size &&
+    hasCell board move
 
 -- legalMoves takes a Game state and returns the list of all valid moves
 legalMoves :: Game -> [Move]
