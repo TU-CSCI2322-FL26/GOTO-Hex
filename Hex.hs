@@ -8,7 +8,6 @@ type Cell = (Position, Player)
 type Game = (Board, Player, Integer)
 type Position = (Integer, Integer)
 type Move = Position
-type Winner = Maybe Player
 
 
 -- testing code --
@@ -44,7 +43,7 @@ legalMoves game@(_, _, size) =
 
 -- this function takes in a Game
 -- then returns either Just the winner of that game or Nothing
-getWinner :: Game -> Winner
+getWinner :: Game -> Maybe Player
 getWinner (game@(board, player, boardsize)) = lookup True (zip wins $ map snd starts)
   where starts = [ cell | (cell@((x,y),p))<-board, case p of Hori -> x == 0
                                                              Vert -> y == 0 ]
