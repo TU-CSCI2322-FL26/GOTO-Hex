@@ -31,7 +31,7 @@ getWinner (game@(board, player, boardsize)) = lookup True (zip wins $ map snd st
         auxWins (game@(board, _, bsize)) acc ((curr@((x,y),p)):toCheck) =
           let tmp = [ x | x<-(adjSimilar board curr), not (elem x acc) ]
               newChecks = tmp ++ toCheck
-              newAcc = newChecks ++ acc
+              newAcc = tmp ++ acc
               winDimension = case p of Hori -> x
                                        Vert -> y
           in if (winDimension == bsize - 1)
