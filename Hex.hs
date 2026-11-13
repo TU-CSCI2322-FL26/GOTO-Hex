@@ -24,11 +24,9 @@ makeMove (board, player, size) move
     | validMove (board, player, size) move = 
         Just ((move, player):board, switchPlayer player, size)
     | otherwise = Nothing
-
--- switchPlayer swaps the current player
-switchPlayer :: Player -> Player
-switchPlayer Hori = Vert
-switchPlayer Vert = Hori
+  where switchPlayer :: Player -> Player
+        switchPlayer Hori = Vert
+        switchPlayer Vert = Hori
 
 -- validMove checks if a move is able to be played, by checking if the cell is already occupied,
 -- and if the position is inside of the board size 
