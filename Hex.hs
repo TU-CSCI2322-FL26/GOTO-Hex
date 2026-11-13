@@ -88,6 +88,8 @@ getCell ((cell@((a,b),_)):rest) (pos@(x,y)) = if a == x && b == y then Just cell
 
 
 
+printGame game = putStr (showGame game)
+
 showGame (board, player, boardSize) = 
     let strBoard = foldr (\line acc -> line ++ ("\n" ++ acc)) "" endLines
         endLines = map (\(l,r) -> putSortedRow l r 0) (zip absLines absRows)
