@@ -1,4 +1,7 @@
 module HexIO where
+import Data.List
+
+import Hex
 
 printGame game = putStr (showGame game)
 

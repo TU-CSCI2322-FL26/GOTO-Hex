@@ -1,7 +1,6 @@
 module Hex where
 import Debug.Trace
 import Data.Maybe
-import Data.List
 
 data Player = Hori | Vert deriving (Show, Eq)
 type Board = [Cell]
