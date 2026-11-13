@@ -13,8 +13,7 @@ type Game = (Board, Player, Integer)
 testGame = (testBoard, Hori, 11)
 testBoard = [ ((x,y), if mod x 2 == 0 then Hori else Vert) | x<-[0..10], y<-[0..10] ]
 
-instance {-# OVERLAPS #-} Show Game where 
-  show (board, player, boardSize) = 
+showGame (board, player, boardSize) = 
     let strBoard = foldr (\line acc -> line ++ ("\n" ++ acc)) "" endLines
         endLines = map (\(l,r) -> putSortedRow l r 0) (zip absLines absRows)
         absRows = map sortRow (getRows 0)
@@ -33,9 +32,3 @@ instance {-# OVERLAPS #-} Show Game where
         nSpaces 0 = []
         nSpaces n = " "++(nSpaces (n-1))
     in "Active player is: " ++ (show player) ++ "\n" ++ strBoard
-{-
- - - - -
- -  - - -
- -   - - -
- -    - - -
- - -}
