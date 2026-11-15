@@ -33,7 +33,7 @@ validMove :: Game -> Move -> Bool
 validMove (board, _, size) move =
     fst move >= 0 && fst move < size &&
     snd move >= 0 && snd move < size &&
-    hasCell board move
+    not (hasCell board move)
 
 -- legalMoves takes a Game state and returns the list of all valid moves
 legalMoves :: Game -> [Move]
