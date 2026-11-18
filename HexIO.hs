@@ -16,7 +16,7 @@ readGame input = (board,player,boardSize)
         (player,boardSize) = case splitOn "," l1 of (pl:bs:_) -> (readPlayer pl, readInteger bs)
                                                     _ -> error "invalid Game file - error on parsing header"
         horiMoves = map (\pos -> (pos,Hori)) (getMoves ( splitOn "," l2))
-        vertMoves = map (\pos -> (pos,Hori)) (getMoves ( splitOn "," l3))
+        vertMoves = map (\pos -> (pos,Vert)) (getMoves ( splitOn "," l3))
         board = horiMoves ++ vertMoves
         readInteger n = case readMaybe n :: Maybe Integer of Nothing -> error "invalid Game file - not a number"
                                                              Just x -> x
@@ -28,9 +28,19 @@ readGame input = (board,player,boardSize)
         getMoves (curr:rest) = case words curr of (x:y:[]) -> (readInteger x, readInteger y):(getMoves rest)
                                                   n -> error "invalid Game file - error on parsing moves"
 
+showGame :: Game -> String
+showGame (board,active,boardSize) = line1 ++ (('\n':line2) ++ ('\n':line3))
+  where line1 = (show active) ++ (',':(show boardSize))
+        line2 = intercalate "," lst2
+        line3 = intercalate "," lst3
+        (lst2,lst3) = foldr sorter ([],[]) board
+        sorter :: Cell -> ([String],[String]) -> ([String],[String])
+        sorter ((x,y),player) (h,v) = case player of Hori -> (((show x) ++ " " ++ (show y)):h,v)
+                                                     Vert -> (h,((show x) ++ " " ++ (show y)):v)
+
 printGame game = putStr (showGame game)
 
-showGame (board, player, boardSize) = 
+showGamePretty (board, player, boardSize) = 
     let strBoard = foldr (\line acc -> line ++ ("\n" ++ acc)) "" endLines
         endLines = map (\(l,r) -> putSortedRow l r 0) (zip absLines absRows)
         absRows = map sortRow (getRows 0)
