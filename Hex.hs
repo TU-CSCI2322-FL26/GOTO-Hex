@@ -16,6 +16,9 @@ testBoardEmpty = []
 testGame2 = (testBoardFull, Hori, 11)
 testBoardFull = [ ((x,y), if mod x 2 == 0 then Hori else Vert) | x<-[0..10], y<-[0..10] ]
 testMove = (4, 4)
+
+makeGame :: Board -> Player -> Integer
+makeGame board playerTurn boardSize = (board, playerTurn, boardSize)
 -- testing code --
 
 -- makeMove takes a Game and a Move, and returns the Game after the move concluded 
