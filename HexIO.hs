@@ -29,7 +29,7 @@ readGame input = (board,player,boardSize)
                                                   n -> error "invalid Game file - error on parsing moves"
 
 showGame :: Game -> String
-showGame (board,active,boardSize) = line1 ++ (('\n':line2) ++ ('\n':line3))
+showGame (board,active,boardSize) = line1 ++ (('\n':line2) ++ ('\n':line3)) ++ "\n"
   where line1 = (show active) ++ (',':(show boardSize))
         line2 = intercalate "," lst2
         line3 = intercalate "," lst3
