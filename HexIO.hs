@@ -1,7 +1,32 @@
 module HexIO where
 import Data.List
+import Data.List.Split
+import Text.Read
+import Debug.Trace
 
 import Hex
+
+readGameFromFile :: String -> IO Game
+readGameFromFile str = fmap readGame $ readFile str
+
+readGame :: String -> Game
+readGame input = (board,player,boardSize)
+  where (l1,l2,l3) = case lines input of (a:b:c:_) -> (a,b,c)
+                                         _ -> error "invalid Game file - not enough lines"
+        (player,boardSize) = case splitOn "," l1 of (pl:bs:_) -> (readPlayer pl, readInteger bs)
+                                                    _ -> error "invalid Game file - error on parsing header"
+        horiMoves = map (\pos -> (pos,Hori)) (getMoves ( splitOn "," l2))
+        vertMoves = map (\pos -> (pos,Hori)) (getMoves ( splitOn "," l3))
+        board = horiMoves ++ vertMoves
+        readInteger n = case readMaybe n :: Maybe Integer of Nothing -> error "invalid Game file - not a number"
+                                                             Just x -> x
+        readPlayer "Hori" = Hori
+        readPlayer "Vert" = Vert
+        readPlayer _ = error "invalid Game file - error parsing player name; should be \"Hori\" or \"Vert\""
+        getMoves [] = []
+        getMoves ("":rest) = getMoves rest
+        getMoves (curr:rest) = case words curr of (x:y:[]) -> (readInteger x, readInteger y):(getMoves rest)
+                                                  n -> error "invalid Game file - error on parsing moves"
 
 printGame game = putStr (showGame game)
 
