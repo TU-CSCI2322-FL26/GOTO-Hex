@@ -11,8 +11,8 @@ main =
      hFlush stdout
      filePath <- getLine
      game <- loadGame filePath
-     putStrLn $ showGamePretty game
-     putStrLn $ showGame game
+     putBestMove game--putStrLn $ showGamePretty game
+     --putStrLn $ showGame game
 
 writeGame :: Game -> FilePath -> IO ()
 writeGame game location = writeFile location $ showGame game
@@ -22,5 +22,5 @@ loadGame location = fmap readGame $ readFile location
 
 putBestMove :: Game -> IO ()
 putBestMove game = putStr move
-  where move = case Just (0,0){-bestMove game-} of Just m -> show m
-                                                   Nothing -> ""
+  where move = case bestMove game of Just m -> show m
+                                     Nothing -> ""
