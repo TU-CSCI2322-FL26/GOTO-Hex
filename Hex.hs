@@ -22,7 +22,7 @@ makeGame board playerTurn boardSize = (board, playerTurn, boardSize)
 -- testing code --
 
 -- makeMove takes a Game and a Move, and returns the Game after the move concluded 
--- returns an unchanged Game state if the attempted move is invalid
+-- returns Nothing if the attempted move is invalid
 makeMove :: Game -> Move -> Maybe Game
 makeMove (board, player, size) move
     | validMove (board, player, size) move = 
