@@ -19,7 +19,9 @@ whoWillWin game@(_, player, _) =
                     
 
 -- bestMove takes a game and returns a move that can win the game
-bestMove :: Game -> Move
+-- always returns a move if legal moves exist (even if losing)
+-- returns Nothing if no legal moves exist
+bestMove :: Game -> Maybe Move
 bestMove game@(_, player, _) = 
     let moves = legalMoves game
         winningMoves =
@@ -27,5 +29,7 @@ bestMove game@(_, player, _) =
                     Just nextGame <- [makeMove game move], 
                     whoWillWin nextGame == player]
     in case winningMoves of
-        (move:_) -> move
-        []       -> head moves
+        (move:_) -> Just move
+        []       -> case moves of
+                        (move:_) -> Just move
+                        []       -> Nothing
