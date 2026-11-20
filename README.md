@@ -17,3 +17,5 @@ Reference for game files:
 TestGame1.csv contains the empty game of size 11 on Hori's turn
 TestGame2.csv contains a game Vert will win in 1 move
 TestGame3.csv contains a game Vert will win in 2 moves
+TestGame4.csv contains a game Hori will win in 3 moves
+TestGame5.csv contains a game Vert will win in 4 moves
