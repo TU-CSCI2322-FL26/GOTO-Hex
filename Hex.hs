@@ -11,9 +11,14 @@ type Move = Position
 
 
 -- testing code --
-testGame = (testBoard, Hori, 11)
-testBoard = [ ((x,y), if mod x 2 == 0 then Hori else Vert) | x<-[0..10], y<-[0..10] ]
+testGame1 = (testBoardEmpty, Hori, 11)
+testBoardEmpty = []
+testGame2 = (testBoardFull, Hori, 11)
+testBoardFull = [ ((x,y), if mod x 2 == 0 then Hori else Vert) | x<-[0..10], y<-[0..10] ]
 testMove = (4, 4)
+
+makeGame :: Board -> Player -> Integer -> Game
+makeGame board playerTurn boardSize = (board, playerTurn, boardSize)
 -- testing code --
 
 -- makeMove takes a Game and a Move, and returns the Game after the move concluded 
@@ -71,7 +76,11 @@ getWinner (game@(board, player, boardsize)) = lookup True (zip wins $ map snd st
         -- this function takes in a position and a boardstate
         -- then returns a list of all cells adjacent to the given position
         adjacents :: Board -> Cell -> [Cell]
-        adjacents board ((x,y),_) = catMaybes $ map (getCell board) ((x-1,y):(x+1,y):(x,y-1):(x+1,y-1):(x-1,y+1):(x,y+1):[])
+        adjacents board ((x,y),_) = 
+          let cellMaybes = map (\pos -> (pos, lookup pos board)) [(x-1,y),(x+1,y),(x,y-1),(x+1,y-1),(x-1,y+1),(x,y+1)]
+              takeoutMaybe (a,b) = case b of Nothing -> Nothing
+                                             Just c -> Just (a,c)
+          in catMaybes $ map takeoutMaybe cellMaybes
 
 -- this function takes in a board and position
 -- then returns whether or not a cell exists in that position
@@ -81,6 +90,7 @@ hasCell board pos = case getCell board pos of Nothing -> False
 
 -- this function takes in a board and position
 -- then returns Just the cell at that position (or Nothing)
-getCell :: Board -> Position -> Maybe (Position, Player)
-getCell [] _ = Nothing
-getCell ((cell@((a,b),_)):rest) (pos@(x,y)) = if a == x && b == y then Just cell else getCell rest pos
+getCell :: Board -> Position -> Maybe Player
+getCell board pos = lookup pos board
+--getCell [] _ = Nothing
+--getCell ((cell@((a,b),_)):rest) (pos@(x,y)) = if a == x && b == y then Just cell else getCell rest pos
