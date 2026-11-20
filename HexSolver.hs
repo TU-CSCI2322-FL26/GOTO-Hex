@@ -29,7 +29,7 @@ bestMove game@(_, player, _) =
                     Just nextGame <- [makeMove game move], 
                     whoWillWin nextGame == player]
     in case winningMoves of
-        (move:_) -> Just move
+        (moveW:_) -> Just moveW
         []       -> case moves of
-                        (move:_) -> Just move
+                        (moveL:_) -> Just moveL
                         []       -> Nothing
